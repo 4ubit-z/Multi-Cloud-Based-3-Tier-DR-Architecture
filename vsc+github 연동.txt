@@ -1,0 +1,6 @@
+(vsc git 연동)
+VSC >> Source Control(소스 제어) → Initialize Repository
+컨트롤+쉬프트+p  >> clone >> from git >> 연결
+
+git config --local user.name "name"
+git config --local user.email "깃허브_이메일@예시.com"
