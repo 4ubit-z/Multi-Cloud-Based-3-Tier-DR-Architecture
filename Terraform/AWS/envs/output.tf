@@ -10,5 +10,5 @@ output "arn" {
 
 output "region" {
   description = "The current AWS region"
-  value       = data.aws_region.current.name
+  value       = data.aws_region.current.id
 }
