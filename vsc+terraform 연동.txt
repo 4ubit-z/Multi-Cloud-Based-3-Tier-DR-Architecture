@@ -1,0 +1,98 @@
+[tf 연결 : SSO방식 / github action 연결 : OIDC방식]
+
+1. (AWS CLI v2 설치)
+PS : Invoke-WebRequest "https://awscli.amazonaws.com/AWSCLIV2.msi" -OutFile "AWSCLIV2.msi" >> 다운
+>> AWSCLIV2.msi 수동실행 설치
+(확인)
+>> aws --version 
+
+(에러시)
+path 시스템 변수 >> C:\Program Files\Amazon\AWSCLIV2\ 추가
+
+
+2. (AWS SSO 프로필 설정)
+-sso 계정-
+ID : tf_member1   / tf_member2
+pw : Tf_member1  / Tf_memeber2
+
+PS : aws configure sso >>
+
+SSO session name (Recommended): aubit-sso-session
+SSO start URL [None]: https://d-9b676a3049.awsapps.com/start
+SSO region [None]: ap-northeast-2
+SSO registration scopes [sso:account:access]: sso:account:access
+Profile name [poweruser1-867344475403]: tf_member(1)-sso
+
+(연결확인)
+PS : aws sts get-caller-identity --profile tf_member1-sso
+
+(에러시)
+PS : notepad $env:USERPROFILE\.aws\config
+output = aws configure ssoaws configure ssoaws configure ssoaws configure ssoaws configure sso >> 변경
+output = json
+
+
+3. (테라폼 설치)
+
+- .gitignore 파일생성 -  
+# Terraform build artifacts
+Terraform/**/.terraform/
+Terraform/**/*.tfstate*
+*.tfvars
+crash.log
+
+PS : Invoke-WebRequest -Uri "https://releases.hashicorp.com/terraform/1.9.7/terraform_1.9.7_windows_amd64.zip" -OutFile "$env:TEMP\terraform.zip"
+PS : Expand-Archive -Path "$env:TEMP\terraform.zip" -DestinationPath "C:\terraform"
+
+path 시스템 변수 >> C:\terraform 추가
+
+(확인)
+terraform -version
+
+
+4. (테스트)
+- providers.tf -
+
+provider "aws" {
+  region  = "ap-northeast-2"
+  profile = "tf_member1-sso"
+}
+
+
+- main.tf -
+
+data "aws_caller_identity" "me" {}
+data "aws_region" "current" {}
+
+output "account_id" { value = data.aws_caller_identity.me.account_id }
+output "arn"        { value = data.aws_caller_identity.me.arn }
+output "region"     { value = data.aws_region.current.name }
+
+
+- output.tf -
+
+output "account_id" {
+  description = "AWS Account ID"
+  value       = data.aws_caller_identity.me.account_id
+}
+
+output "arn" {
+  description = "The ARN of the caller identity"
+  value       = data.aws_caller_identity.me.arn
+}
+
+output "region" {
+  description = "The current AWS region"
+  value       = data.aws_region.current.name
+}
+
+terraform init
+terraform plan
+
+
+
+(.gitignore 파일 생성안하고 commit 관련 에러시)
+git-filter-repo 설치
+PS : pip install git-filter-repo
+PS : git filter-repo --path Terraform/AWS/envs/.terraform/providers/registry.terraform.io/hashicorp/aws/6.15.0/windows_amd64/terraform-provider-aws_v6.15.0_x5.exe --invert-paths
+PS : git push origin kim --force
