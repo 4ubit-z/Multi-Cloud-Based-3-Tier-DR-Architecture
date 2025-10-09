@@ -111,7 +111,7 @@ resource "aws_route_table" "RT_public_1a" { #퍼블릭1a 서브넷 > IGW 라우�
 }
 resource "aws_route_table_association" "RT_public_ass_1a" { #퍼블릭1a 서브넷 라우팅 테이블 연결
     subnet_id = aws_subnet.public_1a.id
-    route_table_id = aws_route_table.rt_1a.id
+    route_table_id = aws_route_table.RT_public_1a.id
 
 }
 resource "aws_route_table" "RT_private_1a" { #프라이빗1a 서브넷 > 퍼블릭1a 서브넷 라우팅

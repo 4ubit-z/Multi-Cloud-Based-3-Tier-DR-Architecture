@@ -20,13 +20,14 @@ PS : aws configure sso >>
 SSO session name (Recommended): aubit-sso-session
 SSO start URL [None]: https://d-9b676a3049.awsapps.com/start
 SSO region [None]: ap-northeast-2
+type : json
 SSO registration scopes [sso:account:access]: sso:account:access
 Profile name [poweruser1-867344475403]: tf_member(1)-sso
 
 (연결확인)
 PS : aws sts get-caller-identity --profile tf_member1-sso
 
-(에러시)
+(json 입력실수 에러시)
 PS : notepad $env:USERPROFILE\.aws\config
 output = aws configure ssoaws configure ssoaws configure ssoaws configure ssoaws configure sso >> 변경
 output = json
