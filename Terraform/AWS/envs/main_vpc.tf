@@ -1,6 +1,6 @@
 # 퍼블릭 서브넷 
 
-resource "aws_subnet" "public_1a" { # 퍼블릭1 서브넷 생성
+resource "aws_subnet" "public_1a" { # 퍼블릭1a 서브넷 생성
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "ap-northeast-2a"
@@ -11,7 +11,7 @@ resource "aws_subnet" "public_1a" { # 퍼블릭1 서브넷 생성
   }
 }
 
-resource "aws_subnet" "public_2b" { # 퍼블릭1 서브넷 생성
+resource "aws_subnet" "public_2b" { # 퍼블릭2b 서브넷 생성
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.2.0/24"
   availability_zone       = "ap-northeast-2b"
@@ -22,7 +22,7 @@ resource "aws_subnet" "public_2b" { # 퍼블릭1 서브넷 생성
   }
 }
 
-resource "aws_subnet" "public_3c" { # 퍼블릭1 서브넷 생성
+resource "aws_subnet" "public_3c" { # 퍼블릭3c 서브넷 생성
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.3.0/24"
   availability_zone       = "ap-northeast-2c"
@@ -35,7 +35,7 @@ resource "aws_subnet" "public_3c" { # 퍼블릭1 서브넷 생성
 
 # 프라이빗 서브넷 
 
-resource "aws_subnet" "private_1a" { # 프라이빗1 서브넷 생성
+resource "aws_subnet" "private_1a" { # 프라이빗1a 서브넷 생성
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.10.0/24"
   availability_zone       = "ap-northeast-2a"
@@ -45,7 +45,7 @@ resource "aws_subnet" "private_1a" { # 프라이빗1 서브넷 생성
   }
 }
 
-resource "aws_subnet" "private_2b" { # 프라이빗2 서브넷 생성
+resource "aws_subnet" "private_2b" { # 프라이빗2b 서브넷 생성
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.11.0/24"
   availability_zone       = "ap-northeast-2b"
@@ -55,7 +55,7 @@ resource "aws_subnet" "private_2b" { # 프라이빗2 서브넷 생성
   }
 }
 
-resource "aws_subnet" "private_3c" { # 프라이빗3 서브넷 생성
+resource "aws_subnet" "private_3c" { # 프라이빗3c 서브넷 생성
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.12.0/24"
   availability_zone       = "ap-northeast-2c"
