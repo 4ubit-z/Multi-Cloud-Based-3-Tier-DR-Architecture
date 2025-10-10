@@ -39,7 +39,8 @@ resource "aws_subnet" "private_1a" { # 프라이빗1a 서브넷 생성
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.10.0/24"
   availability_zone       = "ap-northeast-2a"
-
+  map_public_ip_on_launch = false
+  
   tags = {
     Name = "main-private-subnet-1a"
   }
@@ -49,6 +50,7 @@ resource "aws_subnet" "private_2b" { # 프라이빗2b 서브넷 생성
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.11.0/24"
   availability_zone       = "ap-northeast-2b"
+  map_public_ip_on_launch = false
 
   tags = {
     Name = "main-private-subnet-2b"
@@ -59,6 +61,7 @@ resource "aws_subnet" "private_3c" { # 프라이빗3c 서브넷 생성
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.12.0/24"
   availability_zone       = "ap-northeast-2c"
+  map_public_ip_on_launch = false
 
   tags = {
     Name = "main-private-subnet-3c"
