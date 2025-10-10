@@ -17,7 +17,7 @@ resource "aws_eks_cluster" "eks_cluster1" { #eks 클러스터 생성
     }
 }
 
-resource "aws_eks_node_group" "eks_node1" {
+resource "aws_eks_node_group" "eks_node1" { #노드그룹 생성
     cluster_name = aws_eks_cluster.eks_cluster1.name
     node_group_name = "eks_node1"
     node_role_arn = var.sso_role_name
