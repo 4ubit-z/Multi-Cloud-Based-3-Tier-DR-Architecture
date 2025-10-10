@@ -58,21 +58,21 @@ resource "aws_security_group" "sg_eks_nodes" { #워커 노드 SG
         to_port = 32767
         protocol = "tcp"
         security_groups = [aws_security_group.sg_alb.id]
-        description = "ALB > NodePort"
+        description = "ALB to NodePort"
     }
     ingress {
         from_port = 10250
         to_port = 10250
         protocol = "tcp"
         security_groups = [aws_security_group.sg_eks_cluster.id] 
-        description = "Cluster > Nodes (kubelet)"
+        description = "Cluster to Nodes (kubelet)"
     }
     ingress {
         from_port = 0
         to_port = 0
         protocol = "-1"
         self = true
-        description = "node-to-node"
+        description = "node to node"
     }
 
     egress { #줄이기
@@ -96,8 +96,8 @@ resource "aws_security_group" "sg_rds" {
         from_port = 5432
         to_port = 5432
         protocol = "tcp"
-        security_groups = [aws_security_group.sg_eks_nodes]
-        description = "eks_nodes > db"
+        security_groups = [aws_security_group.sg_eks_nodes.id]
+        description = "eks_nodes to db"
     }
 
     egress { #줄이기
