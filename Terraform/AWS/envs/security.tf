@@ -65,7 +65,7 @@ resource "aws_security_group" "sg_eks_nodes" { #워커 노드 SG
         to_port = 10250
         protocol = "tcp"
         security_groups = [aws_security_group.sg_eks_cluster.id] 
-        description = "Cluster -> Nodes (kubelet)"
+        description = "Cluster > Nodes (kubelet)"
     }
     ingress {
         from_port = 0
