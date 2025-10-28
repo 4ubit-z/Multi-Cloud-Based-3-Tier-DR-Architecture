@@ -1,8 +1,15 @@
+variable "project_name" {
+  description = "multi_cloud_dr"
+}
+
+
 variable "region" {
+  description = "region"
   default = "ap-northeast-2"
 }
 
 variable "profile" {
+  description = "profile"
   default = "tf_member1-sso"
 }
 
@@ -25,8 +32,40 @@ variable "sso_account_id" {
 variable "sso_role_name" {
   default = "PowerUserAccess"
 }
+###########################################################################
+#vpc/Network variable
+
+# Subnet
+variable "private_subnets" {
+  description = "private subnet CIDR list"
+  type        = list(string)
+  default     = [
+    "10.0.1.0/24", # ap-northeast-2a
+    "10.0.2.0/24", # ap-northeast-2b
+    "10.0.3.0/24", # ap-northeast-2c
+  ]
+}
+variable "public_subnets" {
+  description = "public subnet CIDR list"
+  type        = list(string)
+  default     = [
+    "10.0.10.0/24", # ap-northeast-2a
+    "10.0.11.0/24", # ap-northeast-2b
+    "10.0.12.0/24", # ap-northeast-2c
+  ]
+}
 
 
+
+
+
+
+
+
+
+
+
+###########################################################################
 
 #eks
 
@@ -35,4 +74,21 @@ variable "eks_cluster_1" {
 }
 variable "eks_role" {
   default = "eks_role"
+}
+
+# eks_setting variable
+variable "eks_cluster1_desired_node_count" {
+  description = "default_node_count"
+  type = number
+  default = 3
+}
+variable "eks_cluster1_min_node_count" {
+  description = "min_node_count"
+  type = number
+  default = 3
+}
+variable "eks_cluster1_max_node_count" {
+  description = "max_node_count"
+  type = number
+  default = 6
 }

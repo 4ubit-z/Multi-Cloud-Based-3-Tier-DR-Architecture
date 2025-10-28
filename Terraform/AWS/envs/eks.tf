@@ -28,9 +28,9 @@ resource "aws_eks_node_group" "eks_node1" { #노드그룹 생성
     ]
 
     scaling_config {
-      desired_size = 3
-      min_size = 3
-      max_size = 6
+      desired_size = var.eks_cluster1_desired_node_count #3
+      min_size = var.eks_cluster1_min_node_count #3
+      max_size = var.eks_cluster1_max_node_count #6
     }
     instance_types = ["t3.medium"]
     disk_size = 30
