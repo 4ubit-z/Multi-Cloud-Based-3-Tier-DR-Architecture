@@ -35,6 +35,14 @@ variable "sso_role_name" {
 ###########################################################################
 #vpc/Network variable
 
+variable "vpc_1_cidr" {
+  description = "first vpc"
+  type = string
+  default = "10.0.0.0/16"
+}
+
+
+
 # Subnet
 variable "private_subnets" {
   description = "private subnet CIDR list"
