@@ -44,6 +44,16 @@ variable "vpc_1_cidr" {
 
 
 # Subnet
+variable "public_subnets" {
+  description = "public subnet CIDR list"
+  type        = list(string)
+  default     = [
+    "10.0.10.0/24", # ap-northeast-2a
+    "10.0.11.0/24", # ap-northeast-2b
+    "10.0.12.0/24", # ap-northeast-2c
+  ]
+  
+}
 variable "private_subnets" {
   description = "private subnet CIDR list"
   type        = list(string)
@@ -53,15 +63,7 @@ variable "private_subnets" {
     "10.0.3.0/24", # ap-northeast-2c
   ]
 }
-variable "public_subnets" {
-  description = "public subnet CIDR list"
-  type        = list(string)
-  default     = [
-    "10.0.10.0/24", # ap-northeast-2a
-    "10.0.11.0/24", # ap-northeast-2b
-    "10.0.12.0/24", # ap-northeast-2c
-  ]
-}
+
 
 
 
