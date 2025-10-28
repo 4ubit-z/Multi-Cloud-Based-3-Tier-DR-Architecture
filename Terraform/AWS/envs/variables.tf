@@ -25,3 +25,14 @@ variable "sso_account_id" {
 variable "sso_role_name" {
   default = "PowerUserAccess"
 }
+
+
+
+#eks
+
+variable "eks_cluster_1" {
+  default = "eks_cluster1"
+}
+variable "eks_role" {
+  default = "eks_role"
+}
