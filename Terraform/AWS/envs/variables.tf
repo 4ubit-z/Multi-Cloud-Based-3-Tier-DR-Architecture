@@ -50,7 +50,6 @@ variable "public_subnets" {
   default     = [
     "10.0.10.0/24", # ap-northeast-2a
     "10.0.11.0/24", # ap-northeast-2b
-    "10.0.12.0/24", # ap-northeast-2c
   ]
   
 }
@@ -60,7 +59,6 @@ variable "private_subnets" {
   default     = [
     "10.0.1.0/24", # ap-northeast-2a
     "10.0.2.0/24", # ap-northeast-2b
-    "10.0.3.0/24", # ap-northeast-2c
   ]
 }
 
