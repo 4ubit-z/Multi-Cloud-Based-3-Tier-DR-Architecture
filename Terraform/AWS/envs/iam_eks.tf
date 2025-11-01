@@ -40,16 +40,21 @@ resource "aws_iam_role" "eks_node_role" {
   })
 }
 
-#eks_node policy
+#AmazonEKSWorkerNodePolicy
 resource "aws_iam_role_policy_attachment" "node_worker" {
   role       = aws_iam_role.eks_node_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  #노드가 EKS와 상호작용하는 데 필요한 기본 권한
 }
+#AmazonEKS_CNI_Policy
 resource "aws_iam_role_policy_attachment" "node_cni" {
   role       = aws_iam_role.eks_node_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  #CNI(IP 할당/네트워킹) 권한
 }
+#AmazonEC2ContainerRegistryReadOnly
 resource "aws_iam_role_policy_attachment" "node_ecr_ro" {
   role       = aws_iam_role.eks_node_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  #ECR 이미지 Pull(ReadOnly) 권한
 }
