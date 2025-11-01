@@ -1,0 +1,32 @@
+resource "aws_subnet" "main_public_subnet" {
+  for_each = {
+    "1a" = var.public_subnets[0]
+    "1b" = var.public_subnets[1]
+  }
+  
+  vpc_id               = aws_vpc_.main.id
+  cidr_block           = each.value
+  availability_zone    = var.region
+
+  tags = {
+    name = "main_public_subnet"
+  }
+}
+
+resource "aws_subnet" "main_public_subnet" {
+  for_each = {
+    "1a" = var.private_subnets[0]
+    "1b" = var.private_subnets[1]
+  }
+  
+  vpc_id               = aws_vpc_.main.id
+  cidr_block           = each.value
+  availability_zone    = var.region
+
+  tags = {
+    name = "main_private_subnet"
+  }
+}
+
+
+
