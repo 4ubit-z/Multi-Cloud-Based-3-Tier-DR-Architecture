@@ -1,6 +1,6 @@
 resource "aws_eks_cluster" "eks_cluster1" { #eks 클러스터 생성
     name = var.eks_cluster_1
-    role_arn = var.sso_role_name
+    role_arn = aws_iam_role.eks_cluster_role.arn
     version = "1.30"
 
         

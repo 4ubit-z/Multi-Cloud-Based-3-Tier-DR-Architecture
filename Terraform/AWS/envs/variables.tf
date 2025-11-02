@@ -100,3 +100,81 @@ variable "eks_cluster1_max_node_count" {
   type = number
   default = 6
 }
+
+
+
+###########################################################################
+#eks_role
+
+variable "eks_iam_policy_json" {
+  description = "EKS IAM 정책 JSON"
+  type        = string
+  default = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EKSRoleLifecycle",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:TagRole",
+        "iam:UntagRole",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:PutRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:GetRole",
+        "iam:ListAttachedRolePolicies",
+        "iam:CreateInstanceProfile",
+        "iam:DeleteInstanceProfile",
+        "iam:AddRoleToInstanceProfile",
+        "iam:RemoveRoleFromInstanceProfile"
+      ],
+      "Resource": "arn:aws:iam::*:role/eks_*"
+    },
+    {
+      "Sid": "PassOnlyEKSAndEC2",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": "arn:aws:iam::*:role/eks_*",
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": [
+            "eks.amazonaws.com",
+            "ec2.amazonaws.com"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "ServiceLinkedRolesForEKS",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole"
+      ],
+      "Resource": [
+        "arn:aws:iam::*:role/aws-service-role/eks.amazonaws.com/AWSServiceRoleForAmazonEKS*",
+        "arn:aws:iam::*:role/aws-service-role/eks-nodegroup.amazonaws.com/*",
+        "arn:aws:iam::*:role/aws-service-role/eks-fargate.amazonaws.com/*",
+        "arn:aws:iam::*:role/aws-service-role/elasticloadbalancing.amazonaws.com/*",
+        "arn:aws:iam::*:role/aws-service-role/eks.amazonaws.com/*"
+      ]
+    },
+    {
+      "Sid": "OIDCForIRSAIfNeeded",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateOpenIDConnectProvider",
+        "iam:DeleteOpenIDConnectProvider",
+        "iam:TagOpenIDConnectProvider",
+        "iam:UntagOpenIDConnectProvider"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
