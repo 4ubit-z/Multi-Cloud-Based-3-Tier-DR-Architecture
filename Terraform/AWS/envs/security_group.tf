@@ -37,7 +37,6 @@ resource "aws_security_group" "sg_alb" { # alb SG
 resource "aws_security_group" "sg_eks_cluster" { #컨트롤플레인 ENI SG
     name = "sg_eks_cluster"
     vpc_id = aws_vpc.main.id
-    
     egress { #줄이기
         from_port = 0
         to_port = 0
@@ -47,6 +46,15 @@ resource "aws_security_group" "sg_eks_cluster" { #컨트롤플레인 ENI SG
     }
 
     tags = { Name = "sg_eks_cluster" }
+}
+resource "aws_security_group_rule" "eks_cluster_allow_nodes_443" {
+    type                       = "ingress"
+    from_port                  = 443
+    to_port                    = 443
+    protocol                   = "tcp"
+    security_group_id          = aws_security_group.sg_eks_cluster.id   # 대상 SG (컨트롤 플레인)
+    source_security_group_id   = aws_security_group.sg_eks_nodes.id   # 소스 SG (워커 노드)
+    description                = "Nodes to Cluster API (443)"
 }
 
 resource "aws_security_group" "sg_eks_nodes" { #워커 노드 SG
