@@ -43,6 +43,8 @@ resource "aws_subnet" "private_1a" { # 프라이빗1a 서브넷 생성
   
   tags = {
     Name = "main-private-subnet-1a"
+    "kubernetes.io/cluster/eks_cluster1" = "shared"
+    "kubernetes.io/role/internal-elb"    = "1"
   }
 }
 
@@ -54,6 +56,8 @@ resource "aws_subnet" "private_2b" { # 프라이빗2b 서브넷 생성
 
   tags = {
     Name = "main-private-subnet-2b"
+    "kubernetes.io/cluster/eks_cluster1" = "shared"
+    "kubernetes.io/role/internal-elb"    = "1"
   }
 }
 
@@ -65,6 +69,8 @@ resource "aws_subnet" "private_3c" { # 프라이빗3c 서브넷 생성
 
   tags = {
     Name = "main-private-subnet-3c"
+    "kubernetes.io/cluster/eks_cluster1" = "shared"
+    "kubernetes.io/role/internal-elb"    = "1"
   }
 }
 

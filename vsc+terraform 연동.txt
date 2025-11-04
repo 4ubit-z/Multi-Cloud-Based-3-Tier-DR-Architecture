@@ -9,8 +9,15 @@ PS : Invoke-WebRequest "https://awscli.amazonaws.com/AWSCLIV2.msi" -OutFile "AWS
 (에러시)
 path 시스템 변수 >> C:\Program Files\Amazon\AWSCLIV2\ 추가
 
+2.방법1 [채택] (AWS IAM 프로필 연결)
+aws configure --profile tf_member
+accesskey,secretkey
+region : ap-northeast-2
 
-2. (AWS SSO 프로필 설정)
+
+
+
+2.방법2 [X] (AWS SSO 프로필 설정)
 -sso 계정-
 ID : tf_member1   / tf_member2
 pw : Tf_member1  / Tf_memeber2

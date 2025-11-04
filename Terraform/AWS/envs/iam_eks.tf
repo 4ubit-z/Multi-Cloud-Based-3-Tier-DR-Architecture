@@ -60,3 +60,9 @@ resource "aws_iam_role_policy_attachment" "node_ecr_ro" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   #ECR 이미지 Pull(ReadOnly) 권한
 }
+# AmazonSSMManagedInstanceCore
+resource "aws_iam_role_policy_attachment" "node_ssm" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
