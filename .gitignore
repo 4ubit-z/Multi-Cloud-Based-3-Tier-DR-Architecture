@@ -3,4 +3,5 @@ Terraform/**/*.tfstate*
 Terraform/**/*.tfstate.backup
 Terraform/**/*.tfvars
 .terraform.lock.hcl
+.tf_member1_accesskey
 crash.log
