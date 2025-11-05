@@ -41,10 +41,30 @@ resource "azurerm_public_ip" "public_ip" {
   name                = "tf-public-ip"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static" # ✅ Standard SKU에는 Static 필수
+  sku                 = "Standard"
 }
 
-# 5️⃣ 네트워크 인터페이스 생성
+# 5️⃣ 네트워크 보안 그룹 (NSG) 생성 — SSH 허용
+resource "azurerm_network_security_group" "nsg" {
+  name                = "tf-nsg"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  security_rule {
+    name                       = "allow-ssh"
+    priority                   = 1001
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range           = "*"
+    destination_port_range      = "22"
+    source_address_prefix       = "*"
+    destination_address_prefix  = "*"
+  }
+}
+
+# 6️⃣ 네트워크 인터페이스 생성
 resource "azurerm_network_interface" "nic" {
   name                = "tf-nic"
   location            = azurerm_resource_group.rg.location
@@ -58,7 +78,13 @@ resource "azurerm_network_interface" "nic" {
   }
 }
 
-# 6️⃣ 가상 머신 생성
+# 7️⃣ NSG와 NIC 연결
+resource "azurerm_network_interface_security_group_association" "nic_nsg_assoc" {
+  network_interface_id      = azurerm_network_interface.nic.id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
+
+# 8️⃣ 가상 머신 생성
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = "tf-vm"
   resource_group_name = azurerm_resource_group.rg.name
@@ -69,7 +95,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     azurerm_network_interface.nic.id,
   ]
 
-  admin_password = "Password1234!"  # 테스트용. 실제로는 Key Vault나 변수로 관리하는 것이 안전함.
+  admin_password = "Password1234!"  # 테스트용
   disable_password_authentication = false
 
   os_disk {
