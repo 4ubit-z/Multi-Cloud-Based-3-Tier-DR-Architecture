@@ -3,7 +3,5 @@
 * EKS (Cluster + Node Group) 생성 중
 
 
-
-
 - RDS (Aurora PostgreSQL) 생성 계획
-- s3 생성
+- s3 생성 계획 
