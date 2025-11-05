@@ -1,0 +1,100 @@
+# ===============================
+# 🌐 OS / Editor 기본 무시 항목
+# ===============================
+
+# Windows 시스템 파일
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VSCode 설정
+.vscode/
+.history/
+
+# ============================================
+# 🧱 Terraform (특히 Azure 배포 관련)
+# ============================================
+
+# Terraform 작업 디렉토리 및 캐시
+**/.terraform/
+**/.terraform.lock.hcl
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfvars
+**/*.tfvars.json
+
+# Crash 로그 및 백업 파일
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# ============================================
+# ☁️ Azure 관련 임시/인증 파일
+# ============================================
+
+# Azure CLI 로그인 캐시
+.azure/
+# Terraform provider binaries
+**/terraform-provider-*.exe
+**/terraform-provider-*/**
+
+# 인증 정보 파일 (보안상 푸시 금지)
+*.pem
+*.key
+*.crt
+*.pfx
+*.cer
+*.pub
+
+# ============================================
+# 🐍 Python (만약 스크립트 사용 시)
+# ============================================
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+env/
+venv/
+ENV/
+.venv/
+
+# ============================================
+# 🧩 기타
+# ============================================
+
+# IDE 관련
+.idea/
+*.iml
+
+# 로그 / 백업
+*.log
+*.bak
+*.swp
+*.swo
+*.tmp
+
+# ============================================
+# 📁 프로젝트별 경로 예시 (현재 구조 기준)
+# ============================================
+
+# Azure 관련 폴더 무시
+azure/.terraform/
+azure/.terraform.lock.hcl
+azure/**/*.tfstate*
+azure/**/*.tfvars
+azure/**/*.tfstate.backup
