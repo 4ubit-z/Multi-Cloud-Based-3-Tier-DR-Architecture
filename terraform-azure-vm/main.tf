@@ -132,3 +132,4 @@ output "vm_private_ips" {
   description = "생성된 VM들의 사설 IP 목록"
   value       = [for nic in azurerm_network_interface.nic : nic.ip_configuration[0].private_ip_address]
 }
+
