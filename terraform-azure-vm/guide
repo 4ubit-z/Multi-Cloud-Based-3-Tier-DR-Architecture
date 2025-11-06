@@ -1,0 +1,22 @@
+# main.tf 를 terraform-azure-vm 디렉터리 안에 생성했기에 이동을 해서 테라폼 실행
+cd terraform-azure-vm
+
+# 테라폼 실행
+
+terraform init
+terraform plan
+terraform apply
+
+yes
+
+# 테라폼 삭제(선택)
+terraform destroy
+
+# 생성한 vm IP 확인
+terraform state show azurerm_public_ip.public_ip
+
+# 출력값
+ip_address              = "4.218.23.104"
+
+# ssh 연결
+ssh azureuser@4.218.23.104
