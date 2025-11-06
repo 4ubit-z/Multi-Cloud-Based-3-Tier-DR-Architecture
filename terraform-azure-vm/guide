@@ -2,7 +2,6 @@
 cd terraform-azure-vm
 
 # 테라폼 실행
-
 terraform init
 terraform plan
 terraform apply
@@ -12,11 +11,58 @@ yes
 # 테라폼 삭제(선택)
 terraform destroy
 
-# 생성한 vm IP 확인
+# 생성한 vm IP 확인(방법1)
 terraform state show azurerm_public_ip.public_ip
 
-# 출력값
+# 출력값(방법1)
 ip_address              = "4.218.23.104"
+
+# 생성한 vm IP 확인(방법2)
+terraform state list
+
+# 출력값(방법2)
+azurerm_linux_virtual_machine.vm[0]
+azurerm_linux_virtual_machine.vm[1]
+azurerm_linux_virtual_machine.vm[2]
+azurerm_network_interface.nic[0]
+azurerm_network_interface.nic[1]
+azurerm_network_interface.nic[2]
+azurerm_network_interface_security_group_association.nic_nsg_assoc[0]
+azurerm_network_interface_security_group_association.nic_nsg_assoc[1]
+azurerm_network_interface_security_group_association.nic_nsg_assoc[2]
+azurerm_network_security_group.nsg
+azurerm_public_ip.public_ip[0]
+azurerm_public_ip.public_ip[1]
+azurerm_public_ip.public_ip[2]
+azurerm_resource_group.rg
+azurerm_subnet.subnet
+azurerm_virtual_network.vnet
+
+#(IP 확인)
+terraform state show azurerm_public_ip.public_ip[0]
+
 
 # ssh 연결
 ssh azureuser@4.218.23.104
+
+
+# exit 로 vm 빠져나와서 각 vm 데이터 저장 후 가상머신 종료하는 명령어
+az vm deallocate --resource-group tf-rg-demo --name tf-vm1
+az vm deallocate --resource-group tf-rg-demo --name tf-vm2
+az vm deallocate --resource-group tf-rg-demo --name tf-vm3
+
+# vm 종료후 재시작
+az vm start --resource-group tf-rg-demo --name tf-vm1
+az vm start --resource-group tf-rg-demo --name tf-vm2
+az vm start --resource-group tf-rg-demo --name tf-vm3
+
+# ssh 연결
+vm_private_ips = [
+  "10.0.1.20",
+  "10.0.1.21",
+  "10.0.1.22",
+]
+vm_public_ips = [
+  "4.217.197.170",
+  "20.214.245.138",
+  "52.141.43.45",
