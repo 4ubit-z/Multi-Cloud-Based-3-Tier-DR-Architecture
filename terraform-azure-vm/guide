@@ -44,6 +44,15 @@ terraform state show azurerm_public_ip.public_ip[0]
 
 # ssh 연결
 ssh azureuser@4.218.23.104
+vm_private_ips = [
+  "10.0.1.20",
+  "10.0.1.21",
+  "10.0.1.22",
+]
+vm_public_ips = [
+  "4.217.197.170",
+  "20.214.245.138",
+  "52.141.43.45",
 
 
 # exit 로 vm 빠져나와서 각 vm 데이터 저장 후 가상머신 종료하는 명령어
