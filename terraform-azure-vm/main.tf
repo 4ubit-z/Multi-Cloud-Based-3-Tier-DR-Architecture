@@ -14,13 +14,18 @@ provider "azurerm" {
   subscription_id = "6692c162-4611-41d5-88d5-e8732f36579b"
 }
 
-# 1️⃣ 리소스 그룹 생성
+# VM 개수 정의 (필요시 조정)
+variable "vm_count" {
+  default = 3
+}
+
+# 1️⃣ 리소스 그룹
 resource "azurerm_resource_group" "rg" {
   name     = "tf-rg-demo"
   location = "Korea Central"
 }
 
-# 2️⃣ 가상 네트워크 생성
+# 2️⃣ 가상 네트워크
 resource "azurerm_virtual_network" "vnet" {
   name                = "tf-vnet"
   address_space       = ["10.0.0.0/16"]
@@ -28,24 +33,25 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = azurerm_resource_group.rg.name
 }
 
-# 3️⃣ 서브넷 생성
+# 3️⃣ 서브넷 (10.0.1.16/28 → 10.0.1.16 ~ 10.0.1.31)
 resource "azurerm_subnet" "subnet" {
   name                 = "tf-subnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = ["10.0.1.0/24"]
+  address_prefixes     = ["10.0.1.16/28"]
 }
 
-# 4️⃣ 공용 IP 생성
+# 4️⃣ 공용 IP (VM마다 하나씩 생성)
 resource "azurerm_public_ip" "public_ip" {
-  name                = "tf-public-ip"
+  count               = var.vm_count
+  name                = "tf-public-ip-${count.index + 1}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  allocation_method   = "Static" # ✅ Standard SKU에는 Static 필수
+  allocation_method   = "Static"
   sku                 = "Standard"
 }
 
-# 5️⃣ 네트워크 보안 그룹 (NSG) 생성 — SSH 허용
+# 5️⃣ NSG (SSH 허용)
 resource "azurerm_network_security_group" "nsg" {
   name                = "tf-nsg"
   location            = azurerm_resource_group.rg.location
@@ -64,38 +70,43 @@ resource "azurerm_network_security_group" "nsg" {
   }
 }
 
-# 6️⃣ 네트워크 인터페이스 생성
+# 6️⃣ NIC (각 VM에 고유 사설 IP)
 resource "azurerm_network_interface" "nic" {
-  name                = "tf-nic"
+  count               = var.vm_count
+  name                = "tf-nic-${count.index + 1}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
   ip_configuration {
     name                          = "tf-ipconfig"
     subnet_id                     = azurerm_subnet.subnet.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.public_ip.id
+    private_ip_address_allocation = "Static"
+    private_ip_address            = "10.0.1.${20 + count.index}"  # 10.0.1.20~22 (3대)
+    public_ip_address_id          = azurerm_public_ip.public_ip[count.index].id
   }
 }
 
-# 7️⃣ NSG와 NIC 연결
+# 7️⃣ NSG - NIC 연결
 resource "azurerm_network_interface_security_group_association" "nic_nsg_assoc" {
-  network_interface_id      = azurerm_network_interface.nic.id
+  count                     = var.vm_count
+  network_interface_id      = azurerm_network_interface.nic[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
-# 8️⃣ 가상 머신 생성
+# 8️⃣ VM 생성
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                = "tf-vm"
+  count               = var.vm_count
+  name                = "tf-vm${count.index + 1}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   size                = "Standard_B1s"
   admin_username      = "azureuser"
+
   network_interface_ids = [
-    azurerm_network_interface.nic.id,
+    azurerm_network_interface.nic[count.index].id
   ]
 
-  admin_password = "Password1234!"  # 테스트용
+  admin_password = "Password1234!"
   disable_password_authentication = false
 
   os_disk {
@@ -109,4 +120,15 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "22_04-lts"
     version   = "latest"
   }
+}
+
+# 9️⃣ 출력 (각 VM의 공인 IP 및 사설 IP 목록)
+output "vm_public_ips" {
+  description = "생성된 VM들의 공인 IP 목록"
+  value       = azurerm_public_ip.public_ip[*].ip_address
+}
+
+output "vm_private_ips" {
+  description = "생성된 VM들의 사설 IP 목록"
+  value       = [for nic in azurerm_network_interface.nic : nic.ip_configuration[0].private_ip_address]
 }
