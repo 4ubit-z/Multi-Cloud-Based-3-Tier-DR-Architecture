@@ -1,0 +1,15 @@
+AmazonEKS_CNI_Policy
+AmazonEKSServicePolicy
+AmazonEKSWorkerNodePolicy
+AmazonEKSVPCResourceController
+ElasticLoadBalancingFullAccess
+AmazonEC2ContainerRegistryFullAccess, 
+AmazonEC2ContainerRegistryReadOnly (ReadOnly만 해도 되는데 저는 로컬에서 ECR로 직접 이미지를 전송할거라 FullAccess로 해줬습니다.)
+
+
+
+
+eks->ProjectMember1 엑세스 정책
+AmazonEKSAdminPolicy
+AmazonEKSClusterAdminPolicy
+

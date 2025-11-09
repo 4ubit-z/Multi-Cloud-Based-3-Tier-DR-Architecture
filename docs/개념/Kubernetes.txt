@@ -1,0 +1,47 @@
+[kubuernetes 기본개념]
+Control Plane (컨트롤 플레인) - 클러스터의 관리자
+# Kubernetes의 '두뇌' 역할. 클러스터의 상태를 결정하고 유지 EKS에서는 AWS가 관리
+
+Worker Node (워커 노드) - 실제 작업 공간
+# 컨테이너화된 애플리케이션(Pod)이 실제로 실행되는 '일꾼' 서버. EKS에서는 EC2 인스턴스
+
+Pod (파드) - 컨테이너를 담는 봉투
+# Kubernetes에서 가장 작은 배포 단위. 하나 이상의 컨테이너와 스토리지/네트워크 자원을 캡슐화
+
+Deployment (디플로이먼트) - Pod를 관리하는 지휘자
+# Pod의 개수(복제본) 관리 및 무중단 업데이트/롤백을 담당하는 상위 오브젝트
+
+Service (서비스) - Pod로 가는 출입구
+# Pod 집합에 접근하는 고정된 방법을 제공. 외부 트래픽을 Pod로 라우팅.
+
+
+=========================================================================================================================
+[EKS 의 API 관리 및 인증 개념]
+# EKS(Amazon Elastic Kubernetes Service)는 Kubernetes의 관리 영역(Control Plane)을 AWS가 대신 운영해주는 서비스
+API 서버: kubectl 명령이 실제로 요청을 보내는 EKS Control Plane의 끝점
+IAM (Identity and Access Management): AWS의 사용자 및 권한 관리 서비스 EKS는 IAM을 주된 인증 수단으로 사용
+
+[권한 부여 메커니즘 (Authorization)]
+Access Entry - AWS CLI/Console을 통해 특정 IAM User/Role에게 Kubernetes의 특정 권한(Role)을 부여하는 최신 방식
+ConfigMap (레거시) - 클러스터 내부의 설정 파일로, IAM ARN과 Kubernetes 그룹을 매핑하는 전통적인 방법
+
+[kubectl과 kubeconfig]
+kubectl은 클러스터에 명령을 내리는 도구
+aws eks update-kubeconfig 명령을 실행하면, 현재 IAM 사용자의 자격 증명을 기반으로 임시 인증 토큰이 생성되어 kubeconfig 파일에 저장
+kubectl은 이 토큰을 사용하여 API 서버에 인증(Authentication)
+
+[Pod의 AWS 리소스 접근 (IRSA)]
+목적: Pod가 S3, DynamoDB 등 다른 AWS 서비스에 접근할 때, Pod가 속한 Node 전체에 권한을 부여하지 않고, Pod에만 필요한 최소한의 IAM Role을 부여
+작동 원리: Service Account와 OIDC(OpenID Connect) Provider를 사용하여, Pod가 임시 자격 증명을 요청하고 AWS 서비스에 안전하게 접근할 수 있도록 함
+
+&IRSA 란? 
+IRSA는 Kubernetes의 Pod가 AWS의 S3, DynamoDB, SQS 등 다른 서비스에 안전하게 접근할 수 있도록 AWS IAM Role을 연결해주는 기술
+
+[aws-auth ConfigMap]
+“EKS 클러스터 안에서 어떤 AWS 계정이나 역할이 어떤 쿠버네티스 권한으로 행동할 수 있는지를 정의하는 연결표(Map)
+
+[EKS의 두 가지 권한 시스템]
+EKS는 AWS 서비스니까 당연히 IAM을 쓰지만,
+EKS 내부(Kubernetes) 는 IAM이 아니라 RBAC(Role-Based Access Control) 으로 작동함.
+IAM (AWS 측) - 누가 EKS API 호출할 수 있나 )aws eks update-kubeconfig
+RBAC (Kubernetes 측) - 클러스터 안에서 어떤 리소스에 접근 가능한가 )kubectl get pods, kubectl delete svc
