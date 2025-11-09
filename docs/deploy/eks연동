@@ -49,7 +49,8 @@ kubectl get pods -A
 
 ========================================================================================================
 
-목표 : 네임스페이스 구조 나누기
+목표 : EKS 배포
+[네임스페이스 구조 나누기]
 (3-Tier 구조: frontend / backend / db)
 kubectl create namespace frontend
 kubectl create namespace backend
@@ -61,10 +62,9 @@ kubectl create namespace db
 네임스페이스 안 리소스만 지우고, 네임스페이스는 유지하고 싶을 때
 kubectl delete all --all -n <네임스페이스 이름>
 
-
-
-
-
-
-
-
+[배포]
+kubectl apply -f frontend-nginx.yaml 
+[파드 확인]
+kubectl get pods -n frontend
+[서비스 확인]
+kubectl get svc -n frontend
