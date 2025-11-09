@@ -14,15 +14,52 @@ kubectl get nodes
 
 ========================================================================================================
 
+[목표]
+ProjectMember1 (IAM 주체)로 EKS에서 완전 관리자처럼 kubectl 쓰기
+
+
 [사전준비]
 1. EKS 클러스터 정상 작동 (kubectl get nodes 잘 됨)
 2. CLI 환경에서 작업 중
 
-[RBAC 관리자 권한(system:masters)을 얻는 설정(aws-auth 등록)]
-kubectl get configmap aws-auth -n kube-system -o yaml > aws-auth.yaml
-# 현재 클러스터의 권한 매핑정보를 aws-auth.yaml 파일로 저장
+
+[순서]
+1. Access Entry 생성
+- 콘솔 방식
+aws eks associate-access-policy `
+  --cluster-name eks-cluster-auto `
+  --principal-arn arn:aws:iam::867344475403:user/ProjectMember1 `
+  --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy `
+  --access-scope type=cluster `
+  --region ap-northeast-2
+
+2. Cluster Admin 권한 붙이기
+aws eks update-kubeconfig --region ap-northeast-2 --name eks-cluster-auto --profile ProjectMember1
 
 
+- 수동 방식
+클러스터 > 엑세스관리 > iam 계정 연결 및 권한 부여
+AmazonEKSAdminPolicy
+AmazonEKSClusterAdminPolicy
+
+3. 확인
+kubectl get nodes
+kubectl get pods -A
+
+
+========================================================================================================
+
+목표 : 네임스페이스 구조 나누기
+(3-Tier 구조: frontend / backend / db)
+kubectl create namespace frontend
+kubectl create namespace backend
+kubectl create namespace db
+
+생성 : kubectl create namespace <네임스페이스 이름>
+삭제 : kubectl delete namespace <네임스페이스 이름>
+확인 : kubectl get namespaces
+네임스페이스 안 리소스만 지우고, 네임스페이스는 유지하고 싶을 때
+kubectl delete all --all -n <네임스페이스 이름>
 
 
 

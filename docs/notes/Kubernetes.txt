@@ -14,6 +14,10 @@ Deployment (디플로이먼트) - Pod를 관리하는 지휘자
 Service (서비스) - Pod로 가는 출입구
 # Pod 집합에 접근하는 고정된 방법을 제공. 외부 트래픽을 Pod로 라우팅.
 
+네임스페이스(namespace) - 쿠버네티스에서 “논리적인 구분 영역(Logical Boundary)
+# 같은 클러스터 안에서 리소스를 분리·관리하기 위한 공간
+
+
 
 =========================================================================================================================
 [EKS 의 API 관리 및 인증 개념]
@@ -45,3 +49,5 @@ EKS는 AWS 서비스니까 당연히 IAM을 쓰지만,
 EKS 내부(Kubernetes) 는 IAM이 아니라 RBAC(Role-Based Access Control) 으로 작동함.
 IAM (AWS 측) - 누가 EKS API 호출할 수 있나 )aws eks update-kubeconfig
 RBAC (Kubernetes 측) - 클러스터 안에서 어떤 리소스에 접근 가능한가 )kubectl get pods, kubectl delete svc
+
+

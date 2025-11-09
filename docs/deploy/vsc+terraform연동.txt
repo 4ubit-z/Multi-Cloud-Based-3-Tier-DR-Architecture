@@ -10,7 +10,7 @@ PS : Invoke-WebRequest "https://awscli.amazonaws.com/AWSCLIV2.msi" -OutFile "AWS
 path 시스템 변수 >> C:\Program Files\Amazon\AWSCLIV2\ 추가
 
 2.방법1 [채택] (AWS IAM 프로필 연결)
-aws configure --profile tf_member
+aws configure --profile ProjectMember1
 accesskey,secretkey
 region : ap-northeast-2
 
