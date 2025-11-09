@@ -68,3 +68,5 @@ kubectl apply -f frontend-nginx.yaml
 kubectl get pods -n frontend
 [서비스 확인]
 kubectl get svc -n frontend
+
+
