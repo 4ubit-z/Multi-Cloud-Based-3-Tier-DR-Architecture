@@ -2,5 +2,5 @@
 
 목표   	   AWS 전체 서비스 다운과 같은 클라우드 벤더 종속적인 최악의 재해 발생 시 서비스 복원	
 핵심 기술	클라우드 애그노스틱(Cloud-Agnostic) 설계, Multi-Cloud IaC, WAN 환경 데이터 복제	
-작동 방식	DR 컨트롤 서버가 AWS 장애를 확인 ➔ Jenkins 파이프라인이 GCP/Azure용 인프라 코드를 실행 ➔ GCP/Azure에 K8s 클러스터를 구축하고 데이터베이스를 동기화된 상태로 전환 ➔ 최종적으로 Cloudflare DNS를 GCP/Azure 엔드포인트로 전환합니다.	
-기술적 요구사항	데이터베이스 복제를 클라우드 간(예: AWS Aurora to GCP Cloud SQL)에 실시간으로 유지해야 합니다. K8s의 워크로드는 Helm/ArgoCD를 통해 클라우드 간 이식성(Portability)을 확보해야 합니다.
+작동 방식	DR 컨트롤 서버가 AWS 장애를 확인 ➔ Jenkins 파이프라인이 Azure용 인프라 코드를 실행 ➔ Azure에 K8s 클러스터를 구축하고 데이터베이스를 동기화된 상태로 전환 ➔ 최종적으로 Cloudflare DNS를 Azure 엔드포인트로 전환합니다.	
+기술적 요구사항	데이터베이스 복제를 클라우드 간(예: AWS Aurora to Azure Cloud SQL)에 실시간으로 유지해야 합니다. K8s의 워크로드는 Helm/ArgoCD를 통해 클라우드 간 이식성(Portability)을 확보해야 합니다.

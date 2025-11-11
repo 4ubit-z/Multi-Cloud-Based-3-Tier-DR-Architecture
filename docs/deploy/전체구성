@@ -1,3 +1,15 @@
+[사용기술]
+CSP : AWS, Azure
+Iac : Terraform
+Monitoring : prometheus / grafana + ?ELK?
+failover : shellscripts / jenkins
+CICD : GithubActions(Iac) / ArgoCD(k8s)
+
+[흐름도]
+client -> cloudflare(proxy) -> AWS/Azure -> K8s(Web)
+failover : AZ내부간 / AZ영역간 / 클라우드간
+
+
 Cloudflare : WAF /DNS /Cloudflarehealthcheck /API
 
 [AWS]
@@ -6,10 +18,17 @@ a.Subnet(4) : DRpublic*az-a / DRprivate(2)*az-a,az-b / private*az-c
 a.IGW(1), a.NGW(1)
 a.RT : DRpublic > IGW, (local) / DRprivate > a.NGW, (local) / private > a.NGW, (local) 
 a.EC2(2) : DRpublic.bastionHost / private-Ops-Controller 
-k8s : master(1) / worker(2)
+k8s : master(1) / worker(2) | Pod : forntend /backend / db = 간단 쇼핑몰
 DB(2)*aurora : DRprivate / Drprivate.replica
-S3(1)
-3 tier web : forntend /backend / db = 간단 쇼핑몰
+S3(1) 
 
+
+[AWS-Ops-Controller]
+monitoring : prometheus / grafana
+failover : 
 
 [Azure]
+
+
+[Azure-Ops-Controller]
+failover : 
