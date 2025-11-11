@@ -1,6 +1,6 @@
-AZ 간 자동 복구 (Regional DR)
+클라우드 간 재해 복구 (Cross-Cloud DR)
 
-목표        AZ 전체가 완전히 다운되는 광범위한 장애 발생 시 서비스 복구 및 전환	
-핵심 기술	DR 컨트롤 서버 (Jenkins/GitLab), Cloudflare Webhook, IaC (Terraform)	
-작동 방식	Cloudflare가 장애 감지 후 Webhook으로 DR 컨트롤 서버를 트리거 ➔ Jenkins 파이프라인이 Terraform을 실행하여 정상 AZ의 노드를 확장하고, DNS를 전환하여 트래픽을 복구합니다.	
-대비 범위	가용 영역(AZ) 1개 전체 다운
+목표   	   AWS 전체 서비스 다운과 같은 클라우드 벤더 종속적인 최악의 재해 발생 시 서비스 복원	
+핵심 기술	클라우드 애그노스틱(Cloud-Agnostic) 설계, Multi-Cloud IaC, WAN 환경 데이터 복제	
+작동 방식	DR 컨트롤 서버가 AWS 장애를 확인 ➔ Jenkins 파이프라인이 GCP/Azure용 인프라 코드를 실행 ➔ GCP/Azure에 K8s 클러스터를 구축하고 데이터베이스를 동기화된 상태로 전환 ➔ 최종적으로 Cloudflare DNS를 GCP/Azure 엔드포인트로 전환합니다.	
+기술적 요구사항	데이터베이스 복제를 클라우드 간(예: AWS Aurora to GCP Cloud SQL)에 실시간으로 유지해야 합니다. K8s의 워크로드는 Helm/ArgoCD를 통해 클라우드 간 이식성(Portability)을 확보해야 합니다.

@@ -1,0 +1,15 @@
+Cloudflare : WAF /DNS /Cloudflarehealthcheck /API
+
+[AWS]
+a.VPC(1) : 10.0.0.0/16
+a.Subnet(4) : DRpublic*az-a / DRprivate(2)*az-a,az-b / private*az-c
+a.IGW(1), a.NGW(1)
+a.RT : DRpublic > IGW, (local) / DRprivate > a.NGW, (local) / private > a.NGW, (local) 
+a.EC2(2) : DRpublic.bastionHost / private-Ops-Controller 
+k8s : master(1) / worker(2)
+DB(2)*aurora : DRprivate / Drprivate.replica
+S3(1)
+3 tier web : forntend /backend / db = 간단 쇼핑몰
+
+
+[Azure]
