@@ -14,6 +14,7 @@ iam:GetRole 권한이 없어서 확인도 못 했다.
 찾아보니 sso를 이용해 테라폼으로 eks 및 Organizations, IAM 연관된 리소스 만들 때
 SSO는 Terraform에서 자주 막힌다고한다. 그래서 iam 테라폼 관리자 계정을 생성해 사용.
 
+해결방법 : SSO대신 IAM 계정으로 테라폼 실행
 
 ===================================================================================
 Instances failed to join the kubernetes cluster
@@ -30,7 +31,7 @@ EC2 인스턴스(노드)는 떴는데, EKS 클러스터에 등록을 못 했다�
 해결방법)
 (1) IAM Role에 AmazonSSMManagedInstanceCore 정책 추가 - EC2 인스턴스가 EKS API에 접근 가능해짐
 (3) 서브넷에 "kubernetes.io/cluster/eks_cluster1" = "shared" 태그 추가 - EKS가 사용할 네트워크를 인식함
-
++ 추가로 보안그룹 역시 문제 
 
 ===================================================================================
 
