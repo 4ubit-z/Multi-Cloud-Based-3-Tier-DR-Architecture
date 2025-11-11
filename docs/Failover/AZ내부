@@ -1,0 +1,6 @@
+AZ 내 자동 복구 (HA - 고가용성)
+
+목표        개별 Node 또는 Pod 장애 발생 시 자동 치유 및 서비스 연속성 확보
+핵심 기술	Kubernetes Self-Healing (ReplicaSet, Controller), Cluster Autoscaler (CA), AWS Auto Scaling Group (ASG)	
+작동 방식	K8s가 Pod 재배치를, ASG/CA가 새 Node 자동 교체/생성을 담당하여 외부의 개입 없이 장애를 해결합니다.	
+대비 범위	파드 크래시, 단일 노드 다운, DB 인스턴스 Failover

@@ -1,0 +1,5 @@
+리전 간 재해 복구 (Cross-Region DR)
+목표	    AWS 서울 리전 전체와 같은 대규모 지리적 재해 시 서비스 복원	
+핵심 기술	Pilot Light 구조, Velero, Aurora Cross-Region Replication	
+작동 방식	2단계와 동일한 파이프라인을 사용하지만, DR 리전의 인프라(도쿄 등)를 구축하고, Velero로 K8s 상태와 데이터를 복원한 후, 새로운 리전으로 DNS를 최종 전환합니다.	
+대비 범위	클라우드 리전 전체 다운 (최상위 재해)
