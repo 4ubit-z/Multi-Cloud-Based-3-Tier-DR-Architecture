@@ -1,9 +1,10 @@
 [사용기술]
 CSP : AWS, Azure
+container : kubernetes / ArgoCD (GitOps)
 Iac : Terraform
-Monitoring : prometheus / grafana + ?ELK?
-failover : shellscripts / jenkins
-CICD : GithubActions(Iac) / ArgoCD(k8s)
+Monitoring : prometheus / grafana + ?ELK/loki?
+CI/CD 및 오케스트레이션 : GithubActions (Iac) | shellscripts / jenkins 
+Data Pipeline : Debezium, Apache Kafka, Velero(etcd)
 
 [흐름도]
 client -> cloudflare(proxy) -> AWS/Azure -> K8s(Web)
