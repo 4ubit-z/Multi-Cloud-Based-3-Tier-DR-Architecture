@@ -9,8 +9,8 @@ CICD : GithubActions(Iac) / ArgoCD(k8s)
 client -> cloudflare(proxy) -> AWS/Azure -> K8s(Web)
 failover : AZ내부간 / AZ영역간 / 클라우드간
 
-
-Cloudflare : WAF /DNS /Cloudflarehealthcheck /API
+[Cloudflare]
+WAF /DNS /Cloudflarehealthcheck /API
 
 [AWS]
 a.VPC(1) : 10.0.0.0/16
