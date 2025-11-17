@@ -10,11 +10,13 @@ terraform -version
 # main.tf 를 terraform-azure-vm 디렉터리 안에 생성했기에 이동을 해서 테라폼 실행
 cd terraform-azure-vm
 
+# azure 연동
+az login
+
 # 테라폼 실행
 terraform init
 terraform plan
 terraform apply
-
 yes
 
 # 테라폼 삭제(선택)
@@ -24,7 +26,7 @@ terraform destroy
 terraform state show azurerm_public_ip.public_ip
 
 # 출력값(방법1)
-ip_address              = "4.218.23.104"
+ip_address  = "4.218.23.104"
 
 # 생성한 vm IP 확인(방법2)
 terraform state list
@@ -33,9 +35,9 @@ terraform state list
 azurerm_linux_virtual_machine.vm[0]
 azurerm_linux_virtual_machine.vm[1]
 azurerm_linux_virtual_machine.vm[2]
-azurerm_network_interface.nic[0]
-azurerm_network_interface.nic[1]
-azurerm_network_interface.nic[2]
+azurerm_network_interface.nic[0]# private ip
+azurerm_network_interface.nic[1]# private ip
+azurerm_network_interface.nic[2]# private ip
 azurerm_network_interface_security_group_association.nic_nsg_assoc[0]
 azurerm_network_interface_security_group_association.nic_nsg_assoc[1]
 azurerm_network_interface_security_group_association.nic_nsg_assoc[2]
@@ -74,13 +76,10 @@ az vm start --resource-group tf-rg-demo --name tf-vm1
 az vm start --resource-group tf-rg-demo --name tf-vm2
 az vm start --resource-group tf-rg-demo --name tf-vm3
 
-# ssh 연결
+#bastion_public_ip
+4.217.195.34
 vm_private_ips = [
   "10.0.1.20",
   "10.0.1.21",
   "10.0.1.22",
 ]
-vm_public_ips = [
-  "4.217.197.170",
-  "20.214.245.138",
-  "52.141.43.45",
