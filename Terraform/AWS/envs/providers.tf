@@ -1,4 +1,4 @@
 provider "aws" {
-  profile = "tf_member1"
+  profile = "ProjectMember1"
   region  = "ap-northeast-2"
 }

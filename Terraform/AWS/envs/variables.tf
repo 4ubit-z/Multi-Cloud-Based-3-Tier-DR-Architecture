@@ -88,17 +88,17 @@ variable "eks_role" {
 variable "eks_cluster1_desired_node_count" {
   description = "default_node_count"
   type = number
-  default = 1
+  default = 2
 }
 variable "eks_cluster1_min_node_count" {
   description = "min_node_count"
   type = number
-  default = 1
+  default = 2
 }
 variable "eks_cluster1_max_node_count" {
   description = "max_node_count"
   type = number
-  default = 3
+  default = 4
 }
 
 
