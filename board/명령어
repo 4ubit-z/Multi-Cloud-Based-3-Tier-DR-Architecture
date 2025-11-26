@@ -1,0 +1,4 @@
+board 디레토리에서 venv\Scripts\activate 명령어 입력 
+=> venv 환경 
+
+pip install celery => celery 설치

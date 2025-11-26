@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: board-web
+  namespace: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: board-web
+  template:
+    metadata:
+      labels:
+        app: board-web
+    spec:
+      containers:
+        - name: board-web
+          image: <도커허브ID>/board-app:1.0
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DB_HOST
+              value: "postgres-svc.database.svc.cluster.local"
+            - name: DB_NAME
+              value: "boarddb"
+            - name: DB_USER
+              value: "boarduser"
+            - name: DB_PASSWORD
+              value: "password"
+            - name: CELERY_BROKER_URL
+              value: "redis://redis-svc.backend.svc.cluster.local:6379/0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: board-web-svc
+  namespace: frontend
+spec:
+  selector:
+    app: board-web
+  ports:
+    - port: 80
+      targetPort: 8000
+  type: NodePort # 테스트용. 클라우드면 LoadBalancer

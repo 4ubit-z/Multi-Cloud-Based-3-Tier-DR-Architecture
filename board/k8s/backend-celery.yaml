@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-worker
+  namespace: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: celery-worker
+  template:
+    metadata:
+      labels:
+        app: celery-worker
+    spec:
+      containers:
+        - name: celery-worker
+          image: <도커허브ID>/board-app:1.0
+          command: ["sh", "-c", "celery -A board_project worker -l info"]
+          env:
+            - name: DB_HOST
+              value: "postgres-svc.database.svc.cluster.local"
+            - name: DB_NAME
+              value: "boarddb"
+            - name: DB_USER
+              value: "boarduser"
+            - name: DB_PASSWORD
+              value: "password"
+            - name: CELERY_BROKER_URL
+              value: "redis://redis-svc.backend.svc.cluster.local:6379/0"

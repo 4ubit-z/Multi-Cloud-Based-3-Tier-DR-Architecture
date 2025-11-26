@@ -1,0 +1,6 @@
+<h1>새 글 작성</h1>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">저장</button>
+</form>
+<a href="{% url 'board:post_list' %}">취소</a>
