@@ -83,3 +83,23 @@ vm_private_ips = [
   "10.0.1.21",
   "10.0.1.22",
 ]
+
+Terraform에서 Standard SKU로 생성하면 CLI/Portal에서 Native tunneling 옵션을 활성화할 수 있는 조건은 충족하지만,
+
+실제로 터널링을 사용하려면 Terraform으로는 자동으로 활성화할 수 없고, CLI 또는 Portal에서 별도로 활성화해야 합니다.
+
+즉 요약하면:
+
+SKU = Standard → Native tunneling 가능
+
+Terraform에서는 Native tunneling 활성화 불가
+
+CLI로 활성화 예시:
+
+az network bastion update `
+  --name tf-bastion `
+  --resource-group tf-rg-demo `
+  --enable-tunneling true
+
+
+그래야 az network bastion tunnel 명령을 정상적으로 쓸 수 있습니다.
