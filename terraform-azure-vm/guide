@@ -22,84 +22,65 @@ yes
 # 테라폼 삭제(선택)
 terraform destroy
 
-# 생성한 vm IP 확인(방법1)
-terraform state show azurerm_public_ip.public_ip
+# main.tf에 RSA Key 터미널에 설정코드가 있으니 직접 cmd에 RSA key 생성
+ ssh-keygen -t rsa -b 4096
 
-# 출력값(방법1)
-ip_address  = "4.218.23.104"
-
-# 생성한 vm IP 확인(방법2)
-terraform state list
-
-# 출력값(방법2)
-azurerm_linux_virtual_machine.vm[0]
-azurerm_linux_virtual_machine.vm[1]
-azurerm_linux_virtual_machine.vm[2]
-azurerm_network_interface.nic[0]# private ip
-azurerm_network_interface.nic[1]# private ip
-azurerm_network_interface.nic[2]# private ip
-azurerm_network_interface_security_group_association.nic_nsg_assoc[0]
-azurerm_network_interface_security_group_association.nic_nsg_assoc[1]
-azurerm_network_interface_security_group_association.nic_nsg_assoc[2]
-azurerm_network_security_group.nsg
-azurerm_public_ip.public_ip[0]
-azurerm_public_ip.public_ip[1]
-azurerm_public_ip.public_ip[2]
-azurerm_resource_group.rg
-azurerm_subnet.subnet
-azurerm_virtual_network.vnet
-
-#(IP 확인)
-terraform state show azurerm_public_ip.public_ip[0]
-
-
-# ssh 연결
-ssh azureuser@4.218.23.104
-vm_private_ips = [
-  "10.0.1.20",
-  "10.0.1.21",
-  "10.0.1.22",
-]
-vm_public_ips = [
-  "4.217.197.170",
-  "20.214.245.138",
-  "52.141.43.45",
-
-
-# exit 로 vm 빠져나와서 각 vm 데이터 저장 후 가상머신 종료하는 명령어
-az vm deallocate --resource-group tf-rg-demo --name tf-vm1
-az vm deallocate --resource-group tf-rg-demo --name tf-vm2
-az vm deallocate --resource-group tf-rg-demo --name tf-vm3
-
-# vm 종료후 재시작
-az vm start --resource-group tf-rg-demo --name tf-vm1
-az vm start --resource-group tf-rg-demo --name tf-vm2
-az vm start --resource-group tf-rg-demo --name tf-vm3
-
-#bastion_public_ip
-4.217.195.34
-vm_private_ips = [
-  "10.0.1.20",
-  "10.0.1.21",
-  "10.0.1.22",
-]
-
-Terraform에서 Standard SKU로 생성하면 CLI/Portal에서 Native tunneling 옵션을 활성화할 수 있는 조건은 충족하지만,
-
-실제로 터널링을 사용하려면 Terraform으로는 자동으로 활성화할 수 없고, CLI 또는 Portal에서 별도로 활성화해야 합니다.
-
-즉 요약하면:
-
-SKU = Standard → Native tunneling 가능
-
-Terraform에서는 Native tunneling 활성화 불가
-
-CLI로 활성화 예시:
-
+# CLI로 Bastion Native 터널링 활성화
 az network bastion update `
   --name tf-bastion `
   --resource-group tf-rg-demo `
   --enable-tunneling true
 
+# 정상출력결과 예시
+true
 
-그래야 az network bastion tunnel 명령을 정상적으로 쓸 수 있습니다.
+# tf-vm1 접속과정
+# tf-vm1의 리소스 ID를 실제로 확인해야함
+az vm show -g tf-rg-demo -n tf-vm1 --query id -o tsv
+
+# 위 명령어를 실행하면 아래와같이 출력이됨
+/subscriptions/6692c162-4611-41d5-88d5-e8732f36579b/resourceGroups/tf-rg-demo/providers/Microsoft.Compute/virtualMachines/tf-vm1
+
+# 리소스 ID를 아래와같이 추가를 해서 터널생성
+az network bastion tunnel --name tf-bastion --resource-group tf-rg-demo --target-resource-id "여기에_전체_ID_붙여넣기" --resource-port 22 --port 50022
+
+# 위 명령어 실행하면 아래와같이 출력이되면 터널이 정상작동
+Opening tunnel on 127.0.0.1:50022 to target 22...
+Opening tunnel on port: 50022 Tunnel is ready, connect on port 50022, Ctrl + C to close
+
+
+# ssh 접속
+# RSA 키의 패스워드 입력 후 엔터 누르면 ssh 접속 완료 현재 작성자의 RSA 키 패스워드는 a
+ssh azureuser@127.0.0.1 -p 50022
+
+
+
+# tf-vm2 접속과정
+ # tf-vm1의 리소스 ID를 실제로 확인해야함
+az vm show -g tf-rg-demo -n tf-vm2 --query id -o tsv
+
+# 위 명령어를 실행하면 아래와같이 출력이됨
+/subscriptions/6692c162-4611-41d5-88d5-e8732f36579b/resourceGroups/tf-rg-demo/providers/Microsoft.Compute/virtualMachines/tf-vm2
+
+# 리소스 ID를 아래와같이 추가를 해서 터널생성
+az network bastion tunnel --name tf-bastion --resource-group tf-rg-demo --target-resource-id "여기에_전체_ID_붙여넣기" --resource-port 22 --port 50023
+
+# ssh 접속
+# RSA 키의 패스워드 입력 후 엔터 누르면 ssh 접속 완료 현재 작성자의 RSA 키 패스워드는 a
+ssh azureuser@127.0.0.1 -p 50023
+
+
+
+# tf-vm3 접속과정
+ # tf-vm1의 리소스 ID를 실제로 확인해야함
+az vm show -g tf-rg-demo -n tf-vm3 --query id -o tsv
+
+# 위 명령어를 실행하면 아래와같이 출력이됨
+/subscriptions/6692c162-4611-41d5-88d5-e8732f36579b/resourceGroups/tf-rg-demo/providers/Microsoft.Compute/virtualMachines/tf-vm3
+
+# 리소스 ID를 아래와같이 추가를 해서 터널생성
+az network bastion tunnel --name tf-bastion --resource-group tf-rg-demo --target-resource-id "여기에_전체_ID_붙여넣기" --resource-port 22 --port 50024
+
+# ssh 접속
+# RSA 키의 패스워드 입력 후 엔터 누르면 ssh 접속 완료 현재 작성자의 RSA 키 패스워드는 a
+ssh azureuser@127.0.0.1 -p 50024
