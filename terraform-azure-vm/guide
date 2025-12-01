@@ -23,6 +23,7 @@ yes
 terraform destroy
 
 # main.tf에 RSA Key 터미널에 설정코드가 있으니 직접 cmd에 RSA key 생성
+# 작성자 RSA key 경로 C:\Users\ehgus/.ssh/id_rsa.pub
  ssh-keygen -t rsa -b 4096
 
 # CLI로 Bastion Native 터널링 활성화(1회)
