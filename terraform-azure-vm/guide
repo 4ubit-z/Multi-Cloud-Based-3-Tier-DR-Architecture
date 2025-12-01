@@ -25,7 +25,7 @@ terraform destroy
 # main.tf에 RSA Key 터미널에 설정코드가 있으니 직접 cmd에 RSA key 생성
  ssh-keygen -t rsa -b 4096
 
-# CLI로 Bastion Native 터널링 활성화
+# CLI로 Bastion Native 터널링 활성화(1회)
 az network bastion update `
   --name tf-bastion `
   --resource-group tf-rg-demo `
